@@ -3,6 +3,11 @@
   src: local("Digital"), url(./assets/fonts/digital-7.ttf) format("truetype");
 }
 
+@font-face {
+  font-family: "Formula1";
+  src: local("Formula1"), url(./assets/fonts/formula1.otf) format("opentype");
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
