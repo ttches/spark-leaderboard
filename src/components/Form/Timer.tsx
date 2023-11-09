@@ -1,19 +1,15 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  background-color: #010206;
   display: flex;
   flex-direction: column;
-  padding: 10px;
-  height: 100%;
-  width: 360px;
 `;
 
 const Button = styled.button`
   border-radius: 99999px;
   font-family: "Formula1";
   font-size: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 `;
 
 const RedButton = styled(Button)`
@@ -24,7 +20,7 @@ const RedButton = styled(Button)`
   }
 `;
 
-const GreenButton = styled(Button)`
+export const GreenButton = styled(Button)`
   background-color: #11fd01;
   color: #010206;
 

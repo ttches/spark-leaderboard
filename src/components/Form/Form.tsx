@@ -1,9 +1,58 @@
 import { useEffect, useState } from "react";
-import Timer from "./Timer";
+import Timer, { GreenButton } from "./Timer";
+import styled from "styled-components";
+
+const Container = styled.div`
+  background-color: #010206;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px;
+  height: 100%;
+  width: 360px;
+`;
+
+const Input = styled.input`
+  border-radius: 15px;
+  box-shadow: none;
+  box-sizing: border-box;
+  height: 40px;
+  font-family: "Formula1";
+  font-size: 20px;
+  padding-left: 16px;
+  width: 100%;
+`;
+
+const Field = styled.div`
+  margin-bottom: 8px;
+`;
+
+const Label = styled.p`
+  font-family: "Formula1";
+  font-size: 20px;
+  margin-bottom: 8px;
+`;
+
+const SubmitButton = styled(GreenButton)`
+  margin-top: 40px;
+
+  &:disabled {
+    background-color: #1a1a1a;
+    border: 2px solid #11fd01;
+    color: white;
+    cursor: not-allowed;
+  }
+`;
 
 const Form = () => {
   const [time, setTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [name1, setName1] = useState("");
+  const [name2, setName2] = useState("");
+  const [clusterName, setClusterName] = useState("");
+  const [pickupCharge, setPickupCharge] = useState("");
+  const [holdPrice, setHoldPrice] = useState("");
+  const [acceptancePenalty, setAcceptancePenalty] = useState("");
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     let interval: number;
@@ -18,9 +67,46 @@ const Form = () => {
   }, [isRunning, time]);
 
   return (
-    <>
+    <Container>
       <Timer time={time} setIsRunning={setIsRunning} />
-    </>
+      <Field>
+        <Label>Name 1</Label>
+        <Input onChange={(e) => setName1(e.target.value)} value={name1} />
+      </Field>
+      <Field>
+        <Label>Name 2</Label>
+        <Input onChange={(e) => setName2(e.target.value)} value={name2} />
+      </Field>
+      <Field>
+        <Label>Cluster Name</Label>
+        <Input
+          onChange={(e) => setClusterName(e.target.value)}
+          value={clusterName}
+        />
+      </Field>
+      <Field>
+        <Label>Pickup Charge</Label>
+        <Input
+          onChange={(e) => setPickupCharge(e.target.value)}
+          value={pickupCharge}
+        />
+      </Field>
+      <Field>
+        <Label>Hold Price</Label>
+        <Input
+          onChange={(e) => setHoldPrice(e.target.value)}
+          value={holdPrice}
+        />
+      </Field>
+      <Field>
+        <Label>Acceptance Penalty</Label>
+        <Input
+          onChange={(e) => setAcceptancePenalty(e.target.value)}
+          value={acceptancePenalty}
+        />
+      </Field>
+      <SubmitButton disabled={buttonDisabled}>Submit</SubmitButton>
+    </Container>
   );
 };
 
