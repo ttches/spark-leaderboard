@@ -1,0 +1,6 @@
+.leaderboard-container {
+  background: url("src/assets/images/leaderboard.png"),
+    lightgray -294.211px -124.153px / 132.371% 126.396% no-repeat,
+    url("src/assets/images/leaderboard.png"),
+    lightgray -294.211px -124.153px / 132.371% 126.396% no-repeat;
+}
