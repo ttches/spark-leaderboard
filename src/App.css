@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "Digital";
+  src: local("Digital"), url(./assets/fonts/digital-7.ttf) format("truetype");
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -39,4 +44,5 @@
 
 .read-the-docs {
   color: #888;
+  font-family: "Digital";
 }
