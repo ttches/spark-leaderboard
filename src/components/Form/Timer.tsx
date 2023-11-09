@@ -13,7 +13,7 @@ const Button = styled.button`
   border-radius: 99999px;
   font-family: "Formula1";
   font-size: 20px;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 `;
 
 const RedButton = styled(Button)`
@@ -36,14 +36,37 @@ const GreenButton = styled(Button)`
 const Time = styled.div`
   font-family: "Digital";
   font-size: 95px;
+  margin: 0 auto;
 `;
 
-const Timer = () => {
+type TimerProps = {
+  time: number;
+  setIsRunning: (isRunning: boolean) => void;
+};
+
+const Timer = ({ time, setIsRunning }: TimerProps) => {
+  const minutes = Math.floor((time % 360000) / 6000);
+  const seconds = Math.floor((time % 6000) / 100);
+  const milliseconds = time % 100;
+
+  const startTimer = () => {
+    setIsRunning(true);
+  };
+
+  const stopTimer = () => {
+    console.log(time);
+    setIsRunning(false);
+  };
+
   return (
     <Container>
-      <Time>00:00:00</Time>
-      <GreenButton>Start</GreenButton>
-      <RedButton>Stop</RedButton>
+      <Time>
+        {minutes.toString().padStart(2, "0")}:
+        {seconds.toString().padStart(2, "0")}:
+        {milliseconds.toString().padStart(2, "0")}
+      </Time>
+      <GreenButton onClick={startTimer}>Start</GreenButton>
+      <RedButton onClick={stopTimer}>Stop</RedButton>
     </Container>
   );
 };
