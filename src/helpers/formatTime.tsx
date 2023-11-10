@@ -7,9 +7,35 @@ const getSeconds = (time: number) =>
     .toString()
     .padStart(2, "0");
 const getMilliseconds = (time: number) =>
-  (time % 100).toString().padStart(2, "0");
+  (Math.floor(time) % 100).toString().padStart(2, "0");
 
-const convertTime = (time: number) =>
+type TimeAndModifiers = {
+  timer: number;
+  pickupCharge?: number;
+  holdPrice?: number;
+  rejectionPenalty?: number;
+};
+
+const calculateTotalTime = ({
+  timer,
+  pickupCharge = 0,
+  holdPrice = 0,
+  rejectionPenalty = 0,
+}: TimeAndModifiers) => {
+  // UPDATE MATH AS NEEDED
+  const pickupPenalty = (pickupCharge / 50) * 30;
+  const holdBonus = (holdPrice / 1000) * 2;
+  const rejectionAdjustment = rejectionPenalty * 1;
+  return timer + pickupPenalty - holdBonus + rejectionAdjustment;
+};
+
+const formatTime = (time: number) =>
   `${getMinutes(time)}:${getSeconds(time)}:${getMilliseconds(time)}`;
 
-export { convertTime, getMinutes, getSeconds, getMilliseconds };
+export {
+  calculateTotalTime,
+  formatTime,
+  getMinutes,
+  getSeconds,
+  getMilliseconds,
+};

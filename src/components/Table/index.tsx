@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import CarvanaLogo from "/carvana-logo.png";
-import { convertTime } from "../../helpers/formatTime";
+import { calculateTotalTime, formatTime } from "../../helpers/formatTime";
 
 const TableWrapper = styled.div`
   min-height: 480px;
@@ -148,7 +148,12 @@ const Table = () => {
     return {
       combinedPlayers: `${data.name1} & ${data.name2}`,
       cluster: data.clusterName,
-      time: data.timer,
+      time: calculateTotalTime({
+        timer: data.timer,
+        pickupCharge: data.pickupCharge,
+        holdPrice: data.holdPrice,
+        rejectionPenalty: data.rejectionPenalty,
+      }),
     };
   });
 
@@ -168,7 +173,7 @@ const Table = () => {
         order: index + 1,
         combinedPlayers: data.combinedPlayers,
         cluster: data.cluster,
-        time: convertTime(data.time),
+        time: formatTime(data.time),
       };
     }
   );
