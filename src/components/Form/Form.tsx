@@ -19,6 +19,7 @@ const Input = styled.input`
   border-color: rgb(133, 133, 133)
   box-shadow: none;
   box-sizing: border-box;
+  color: white;
   height: 40px;
   font-family: "Formula1";
   font-size: 20px;
