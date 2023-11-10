@@ -8,7 +8,7 @@ import {
 } from "@tanstack/react-table";
 
 const TableWrapper = styled.div`
-  height: 520px;
+  height: 570px;
   overflow-y: scroll;
   background-color: black;
   opacity: 0.8;
@@ -16,6 +16,18 @@ const TableWrapper = styled.div`
   font-family: "formula1";
   border: 1px solid white;
   padding: 10px;
+
+  table {
+    width: 100%;
+
+    th,
+    td {
+      font-size: 30px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
 `;
 
 type Person = {

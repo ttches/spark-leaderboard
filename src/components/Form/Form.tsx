@@ -7,8 +7,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 10px;
-  height: 100%;
+  height: 100vh;
   width: 360px;
+  overflow-y: scroll;
 `;
 
 const Input = styled.input`

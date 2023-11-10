@@ -16,7 +16,7 @@ const LeaderBoardContainer = styled.div`
 const TableContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 170px 30px 30px 80px;
+  margin: 190px 30px 30px 80px;
 `;
 
 const Header = styled.div`
