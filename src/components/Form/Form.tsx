@@ -15,6 +15,8 @@ const Container = styled.div`
 const Input = styled.input`
   background-color: #5d5d5e;
   border-radius: 15px;
+  border-style: inset;
+  border-color: rgb(133, 133, 133)
   box-shadow: none;
   box-sizing: border-box;
   height: 40px;

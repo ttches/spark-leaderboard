@@ -20,6 +20,7 @@ const Button = styled.button`
 const RedButton = styled(Button)`
   border: 2px solid #aa0c0b;
   background-color: #1a1a1a;
+  color: white;
 
   &:hover {
     background-color: #8b0a09;
