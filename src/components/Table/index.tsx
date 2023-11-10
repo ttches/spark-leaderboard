@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import styled from "styled-components";
 import {
   createColumnHelper,
@@ -120,6 +122,27 @@ const columns = [
 
 const Table = () => {
   const [data, setData] = useState(() => [...defaultData]);
+
+  const { data: leaderboardData } = useQuery({
+    queryKey: ["GET-LEADERBOARD"],
+    queryFn: () =>
+      axios.get(
+        "https://apik.zagforward.com/stc/pricingcache/api/v1/leaderboard/get"
+      ),
+    ...{
+      enabled: true,
+      cacheTime: 1000 * 60 * 60,
+      refetchOnMount: false,
+      select: (res) => res.data?.content,
+      staleTime: 1000 * 60 * 30,
+      retry: false,
+      refetchOnWindowFocus: false,
+      retryOnMount: false,
+    },
+  });
+
+  console.log(leaderboardData);
+
   const table = useReactTable({
     data,
     columns,
