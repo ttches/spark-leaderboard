@@ -49,10 +49,22 @@ const Cluster = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  max-width: 370px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 
   img {
     margin-right: 10px;
   }
+`;
+
+const Names = styled.div`
+  display: inline-block;
+  max-width: 650px;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
 `;
 
 const Times = styled.div`
@@ -70,7 +82,7 @@ const columns = [
   columnHelper.accessor((row) => row.combinedPlayers, {
     header: () => <RaceResults>RACE RESULTS</RaceResults>,
     id: "players",
-    cell: (info) => <i>{info.getValue()}</i>,
+    cell: (info) => <Names>{info.getValue()}</Names>,
   }),
 
   columnHelper.accessor("cluster", {
