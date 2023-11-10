@@ -8,9 +8,16 @@
   src: local("Formula1"), url(./assets/fonts/formula1.otf) format("opentype");
 }
 
+@font-face {
+  font-family: "Formula1-bold";
+  src: local("Formula1-Bold"),
+    url(./assets/fonts/Formula1-Bold.otf) format("opentype");
+}
+
 .app-container {
   height: 100vh;
   width: 100vw;
+  background-color: black;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;

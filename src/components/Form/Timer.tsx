@@ -33,6 +33,7 @@ const Time = styled.div`
   font-family: "Digital";
   font-size: 95px;
   margin: 0 auto;
+  color: white;
 `;
 
 type TimerProps = {
