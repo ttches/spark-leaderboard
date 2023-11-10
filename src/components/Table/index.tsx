@@ -32,6 +32,12 @@ const TableWrapper = styled.div`
   }
 `;
 
+const RaceResults = styled.div`
+  font-family: "formula1-bold";
+  text-align: left;
+  font-size: 30px;
+`;
+
 const Order = styled.div`
   background-color: white;
   color: black;
@@ -90,7 +96,7 @@ const columns = [
     cell: (info) => <Order>{info.getValue()}</Order>,
   }),
   columnHelper.accessor((row) => row.combinedPlayers, {
-    header: "RACE RESULTS",
+    header: () => <RaceResults>RACE RESULTS</RaceResults>,
     id: "players",
     cell: (info) => <i>{info.getValue()}</i>,
   }),
