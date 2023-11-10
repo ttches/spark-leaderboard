@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import {
+  getMilliseconds,
+  getMinutes,
+  getSeconds,
+} from "../../helpers/formatTime";
 
 const Container = styled.div`
   display: flex;
@@ -14,6 +19,7 @@ const Button = styled.button`
 
 const RedButton = styled(Button)`
   border: 2px solid #aa0c0b;
+  background-color: #1a1a1a;
 
   &:hover {
     background-color: #8b0a09;
@@ -42,10 +48,6 @@ type TimerProps = {
 };
 
 const Timer = ({ time, setIsRunning }: TimerProps) => {
-  const minutes = Math.floor((time % 360000) / 6000);
-  const seconds = Math.floor((time % 6000) / 100);
-  const milliseconds = time % 100;
-
   const startTimer = () => {
     setIsRunning(true);
   };
@@ -58,9 +60,7 @@ const Timer = ({ time, setIsRunning }: TimerProps) => {
   return (
     <Container>
       <Time>
-        {minutes.toString().padStart(2, "0")}:
-        {seconds.toString().padStart(2, "0")}:
-        {milliseconds.toString().padStart(2, "0")}
+        {getMinutes(time)}:{getSeconds(time)}:{getMilliseconds(time)}
       </Time>
       <GreenButton onClick={startTimer}>Start</GreenButton>
       <RedButton onClick={stopTimer}>Stop</RedButton>

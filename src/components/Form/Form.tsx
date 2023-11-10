@@ -13,6 +13,7 @@ const Container = styled.div`
 `;
 
 const Input = styled.input`
+  background-color: #5D5D5E
   border-radius: 15px;
   box-shadow: none;
   box-sizing: border-box;
