@@ -51,7 +51,7 @@ const Form = () => {
   const [clusterName, setClusterName] = useState("");
   const [pickupCharge, setPickupCharge] = useState("");
   const [holdPrice, setHoldPrice] = useState("");
-  const [acceptancePenalty, setAcceptancePenalty] = useState("");
+  const [rejectionPenalty, setRejectionPenalty] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
@@ -101,8 +101,8 @@ const Form = () => {
       <Field>
         <Label>Acceptance Penalty</Label>
         <Input
-          onChange={(e) => setAcceptancePenalty(e.target.value)}
-          value={acceptancePenalty}
+          onChange={(e) => setRejectionPenalty(e.target.value)}
+          value={rejectionPenalty}
         />
       </Field>
       <SubmitButton disabled={buttonDisabled}>Submit</SubmitButton>
