@@ -1,6 +1,3 @@
-// import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import styled from "styled-components";
 import {
   createColumnHelper,
@@ -9,7 +6,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import CarvanaLogo from "/carvana-logo.png";
-import { calculateTotalTime, formatTime } from "../../helpers/formatTime";
+import type { Person } from "../Leaderboard";
 
 const TableWrapper = styled.div`
   min-height: 480px;
@@ -62,34 +59,6 @@ const Times = styled.div`
   text-align: center;
 `;
 
-type Person = {
-  order: number;
-  combinedPlayers: string;
-  cluster: string;
-  time: string;
-};
-
-const defaultData: Person[] = [
-  {
-    order: 1,
-    combinedPlayers: "Tanner & Linsley",
-    cluster: "STC",
-    time: "50:00:00",
-  },
-  {
-    order: 2,
-    combinedPlayers: "Tandy & Miller",
-    cluster: "STC",
-    time: "45:30:00",
-  },
-  {
-    order: 3,
-    combinedPlayers: "Joe & Bob",
-    cluster: "STC",
-    time: "21:00:00",
-  },
-];
-
 const columnHelper = createColumnHelper<Person>();
 
 const columns = [
@@ -121,76 +90,16 @@ const columns = [
   }),
 ];
 
-const Table = () => {
-  // const [data, setData] = useState(() => [...defaultData]);
-
-  const { data: leaderboardData } = useQuery({
-    queryKey: ["GET-LEADERBOARD"],
-    queryFn: () =>
-      axios.get(
-        "https://apik.zagforward.com/stc/pricingcache/api/v1/leaderboard/get"
-      ),
-    ...{
-      enabled: true,
-      cacheTime: 1000 * 60 * 60,
-      refetchOnMount: false,
-      select: (res) => res?.data?.content || [],
-      staleTime: 1000 * 60 * 30,
-      retry: false,
-      refetchOnWindowFocus: false,
-      retryOnMount: false,
-    },
-  });
-
-  console.log("leaderboardData", leaderboardData);
-
-  const convertedLeaderboardData = leaderboardData?.map((data) => {
-    return {
-      combinedPlayers: `${data.name1} & ${data.name2}`,
-      cluster: data.clusterName,
-      time: calculateTotalTime({
-        timer: data.timer,
-        pickupCharge: data.pickupCharge,
-        holdPrice: data.holdPrice,
-        rejectionPenalty: data.rejectionPenalty,
-      }),
-    };
-  });
-
-  const sortedLeaderboardData = convertedLeaderboardData?.sort((a, b) => {
-    if (a.timer < b.timer) {
-      return -1;
-    }
-    if (a.timer > b.timer) {
-      return 1;
-    }
-    return 0;
-  });
-
-  const formattedLeaderboardData: Person[] = sortedLeaderboardData?.map(
-    (data, index) => {
-      return {
-        order: index + 1,
-        combinedPlayers: data.combinedPlayers,
-        cluster: data.cluster,
-        time: formatTime(data.time),
-      };
-    }
-  );
-  console.log(
-    "🚀 ~ file: index.tsx:174 ~ Table ~ formattedLeaderboardData:",
-    formattedLeaderboardData
-  );
-
+const Table = ({ data }: { data: Person[] }) => {
   const table = useReactTable({
-    data: formattedLeaderboardData,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <TableWrapper>
-      {formattedLeaderboardData?.length > 0 && (
+      {data?.length > 0 && (
         <table>
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
