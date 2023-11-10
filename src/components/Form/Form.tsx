@@ -31,6 +31,7 @@ const Label = styled.p`
   font-family: "Formula1";
   font-size: 20px;
   margin-bottom: 8px;
+  color: white;
 `;
 
 const SubmitButton = styled(GreenButton)`

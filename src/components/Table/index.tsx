@@ -6,9 +6,11 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import CarvanaLogo from "/carvana-logo.png";
 
 const TableWrapper = styled.div`
-  height: 570px;
+  min-height: 480px;
+  max-height: 500px;
   overflow-y: scroll;
   background-color: black;
   opacity: 0.8;
@@ -30,31 +32,52 @@ const TableWrapper = styled.div`
   }
 `;
 
+const Order = styled.div`
+  background-color: white;
+  color: black;
+  text-align: center;
+  margin: 0 5px;
+`;
+
+const Cluster = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  img {
+    margin-right: 10px;
+  }
+`;
+
+const Times = styled.div`
+  text-align: center;
+`;
+
 type Person = {
   order: number;
   combinedPlayers: string;
   cluster: string;
-  time: number;
+  time: string;
 };
 
 const defaultData: Person[] = [
   {
     order: 1,
-    combinedPlayers: "tanner & linsley",
+    combinedPlayers: "Tanner & Linsley",
     cluster: "STC",
-    time: 50,
+    time: "50:00:00",
   },
   {
     order: 2,
-    combinedPlayers: "tandy & miller",
+    combinedPlayers: "Tandy & Miller",
     cluster: "STC",
-    time: 80,
+    time: "45:30:00",
   },
   {
     order: 3,
-    combinedPlayers: "joe & bob",
+    combinedPlayers: "Joe & Bob",
     cluster: "STC",
-    time: 10,
+    time: "21:00:00",
   },
 ];
 
@@ -64,7 +87,7 @@ const columns = [
   columnHelper.accessor((row) => row.order, {
     header: () => null,
     id: "order",
-    cell: (info) => info.getValue(),
+    cell: (info) => <Order>{info.getValue()}</Order>,
   }),
   columnHelper.accessor((row) => row.combinedPlayers, {
     header: "RACE RESULTS",
@@ -75,13 +98,17 @@ const columns = [
   columnHelper.accessor("cluster", {
     id: "cluster",
     header: "Cluster",
-    cell: (info) => info.renderValue(),
+    cell: (info) => (
+      <Cluster>
+        <img src={CarvanaLogo} /> {info.renderValue()}
+      </Cluster>
+    ),
   }),
 
   columnHelper.accessor("time", {
     id: "time",
     header: "Time",
-    cell: (info) => info.renderValue(),
+    cell: (info) => <Times>{info.renderValue()}</Times>,
   }),
 ];
 
