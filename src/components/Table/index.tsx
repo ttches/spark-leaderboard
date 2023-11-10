@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import CarvanaLogo from "/carvana-logo.png";
+import { convertTime } from "../../helpers/formatTime";
 
 const TableWrapper = styled.div`
   min-height: 480px;
@@ -121,7 +122,7 @@ const columns = [
 ];
 
 const Table = () => {
-  const [data, setData] = useState(() => [...defaultData]);
+  // const [data, setData] = useState(() => [...defaultData]);
 
   const { data: leaderboardData } = useQuery({
     queryKey: ["GET-LEADERBOARD"],
@@ -133,7 +134,7 @@ const Table = () => {
       enabled: true,
       cacheTime: 1000 * 60 * 60,
       refetchOnMount: false,
-      select: (res) => res.data?.content,
+      select: (res) => res?.data?.content || [],
       staleTime: 1000 * 60 * 30,
       retry: false,
       refetchOnWindowFocus: false,
@@ -141,61 +142,96 @@ const Table = () => {
     },
   });
 
-  console.log(leaderboardData);
+  console.log("leaderboardData", leaderboardData);
+
+  const convertedLeaderboardData = leaderboardData?.map((data) => {
+    return {
+      combinedPlayers: `${data.name1} & ${data.name2}`,
+      cluster: data.clusterName,
+      time: data.timer,
+    };
+  });
+
+  const sortedLeaderboardData = convertedLeaderboardData?.sort((a, b) => {
+    if (a.timer < b.timer) {
+      return -1;
+    }
+    if (a.timer > b.timer) {
+      return 1;
+    }
+    return 0;
+  });
+
+  const formattedLeaderboardData: Person[] = sortedLeaderboardData?.map(
+    (data, index) => {
+      return {
+        order: index + 1,
+        combinedPlayers: data.combinedPlayers,
+        cluster: data.cluster,
+        time: convertTime(data.time),
+      };
+    }
+  );
+  console.log(
+    "🚀 ~ file: index.tsx:174 ~ Table ~ formattedLeaderboardData:",
+    formattedLeaderboardData
+  );
 
   const table = useReactTable({
-    data,
+    data: formattedLeaderboardData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
     <TableWrapper>
-      <table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          {table.getFooterGroups().map((footerGroup) => (
-            <tr key={footerGroup.id}>
-              {footerGroup.headers.map((header) => (
-                <th key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.footer,
-                        header.getContext()
-                      )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </tfoot>
-      </table>
+      {formattedLeaderboardData?.length > 0 && (
+        <table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            {table.getFooterGroups().map((footerGroup) => (
+              <tr key={footerGroup.id}>
+                {footerGroup.headers.map((header) => (
+                  <th key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.footer,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </tfoot>
+        </table>
+      )}
     </TableWrapper>
   );
 };

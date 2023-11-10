@@ -9,4 +9,7 @@ const getSeconds = (time: number) =>
 const getMilliseconds = (time: number) =>
   (time % 100).toString().padStart(2, "0");
 
-export { getMinutes, getSeconds, getMilliseconds };
+const convertTime = (time: number) =>
+  `${getMinutes(time)}:${getSeconds(time)}:${getMilliseconds(time)}`;
+
+export { convertTime, getMinutes, getSeconds, getMilliseconds };

@@ -24,8 +24,8 @@ const Header = styled.div`
   height: 135px;
   background: url(${TableHeader});
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top left;
+  background-size: contain;
+  background-position: bottom left;
 `;
 
 const Leaderboard = () => {
