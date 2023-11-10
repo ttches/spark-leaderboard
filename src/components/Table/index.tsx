@@ -15,73 +15,61 @@ const TableWrapper = styled.div`
   color: white;
   font-family: "formula1";
   border: 1px solid white;
+  padding: 10px;
 `;
 
 type Person = {
-  firstName: string;
-  lastName: string;
-  age: number;
-  visits: number;
-  status: string;
-  progress: number;
+  order: number;
+  combinedPlayers: string;
+  cluster: string;
+  time: number;
 };
 
 const defaultData: Person[] = [
   {
-    firstName: "tanner",
-    lastName: "linsley",
-    age: 24,
-    visits: 100,
-    status: "In Relationship",
-    progress: 50,
+    order: 1,
+    combinedPlayers: "tanner & linsley",
+    cluster: "STC",
+    time: 50,
   },
   {
-    firstName: "tandy",
-    lastName: "miller",
-    age: 40,
-    visits: 40,
-    status: "Single",
-    progress: 80,
+    order: 2,
+    combinedPlayers: "tandy & miller",
+    cluster: "STC",
+    time: 80,
   },
   {
-    firstName: "joe",
-    lastName: "dirte",
-    age: 45,
-    visits: 20,
-    status: "Complicated",
-    progress: 10,
+    order: 3,
+    combinedPlayers: "joe & bob",
+    cluster: "STC",
+    time: 10,
   },
 ];
 
 const columnHelper = createColumnHelper<Person>();
 
 const columns = [
-  columnHelper.accessor("firstName", {
+  columnHelper.accessor((row) => row.order, {
+    header: () => null,
+    id: "order",
     cell: (info) => info.getValue(),
-    footer: (info) => info.column.id,
   }),
-  columnHelper.accessor((row) => row.lastName, {
-    id: "lastName",
+  columnHelper.accessor((row) => row.combinedPlayers, {
+    header: "RACE RESULTS",
+    id: "players",
     cell: (info) => <i>{info.getValue()}</i>,
-    header: () => <span>Last Name</span>,
-    footer: (info) => info.column.id,
   }),
-  columnHelper.accessor("age", {
-    header: () => "Age",
+
+  columnHelper.accessor("cluster", {
+    id: "cluster",
+    header: "Cluster",
     cell: (info) => info.renderValue(),
-    footer: (info) => info.column.id,
   }),
-  columnHelper.accessor("visits", {
-    header: () => <span>Visits</span>,
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("status", {
-    header: "Status",
-    footer: (info) => info.column.id,
-  }),
-  columnHelper.accessor("progress", {
-    header: "Profile Progress",
-    footer: (info) => info.column.id,
+
+  columnHelper.accessor("time", {
+    id: "time",
+    header: "Time",
+    cell: (info) => info.renderValue(),
   }),
 ];
 
