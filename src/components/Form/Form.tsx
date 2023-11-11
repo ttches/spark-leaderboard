@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Timer, { GreenButton } from "./Timer";
 import styled from "styled-components";
+import useAddEntryMutation from "../../mutations/add";
 
 const Container = styled.div`
   background-color: #010206;
@@ -59,6 +60,7 @@ const Form = () => {
   const [holdPrice, setHoldPrice] = useState("");
   const [rejectionPenalty, setRejectionPenalty] = useState("");
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     let interval: number;
@@ -71,6 +73,65 @@ const Form = () => {
 
     return () => clearInterval(interval);
   }, [isRunning, time]);
+
+  useEffect(() => {
+    let timeout: number;
+
+    if (showModal) {
+      timeout = setTimeout(() => {
+        setShowModal(false);
+      }, 5000);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [showModal]);
+
+  useEffect(() => {
+    if (
+      name1 &&
+      name2 &&
+      clusterName &&
+      pickupCharge &&
+      holdPrice &&
+      rejectionPenalty
+    ) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [name1, name2, clusterName, pickupCharge, holdPrice, rejectionPenalty]);
+
+  const resetForm = () => {
+    setTime(0);
+    setName1("");
+    setName2("");
+    setClusterName("");
+    setPickupCharge("");
+    setHoldPrice("");
+    setRejectionPenalty("");
+    setIsRunning(false);
+  };
+
+  const handleError = () => {
+    alert("Error submitting score");
+  };
+
+  const addScoreMutation = useAddEntryMutation({
+    onError: handleError,
+    onSuccess: resetForm,
+  });
+
+  const handleSubmit = () => {
+    addScoreMutation.mutate({
+      time,
+      name1,
+      name2,
+      clusterName,
+      pickupCharge,
+      holdPrice,
+      rejectionPenalty,
+    });
+  };
 
   return (
     <Container>
@@ -111,7 +172,9 @@ const Form = () => {
           value={rejectionPenalty}
         />
       </Field>
-      <SubmitButton disabled={buttonDisabled}>Submit</SubmitButton>
+      <SubmitButton disabled={buttonDisabled} onClick={handleSubmit}>
+        Submit
+      </SubmitButton>
     </Container>
   );
 };
