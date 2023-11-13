@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Timer, { GreenButton } from "./Timer";
 import styled from "styled-components";
 import useAddEntryMutation from "../../mutations/add";
+import Modal from "./Modal";
 
 const Container = styled.div`
   background-color: #010206;
@@ -79,8 +80,9 @@ const Form = () => {
 
     if (showModal) {
       timeout = setTimeout(() => {
+        resetForm();
         setShowModal(false);
-      }, 5000);
+      }, 7000);
     }
 
     return () => clearTimeout(timeout);
@@ -88,6 +90,7 @@ const Form = () => {
 
   useEffect(() => {
     if (
+      time &&
       name1 &&
       name2 &&
       clusterName &&
@@ -99,7 +102,15 @@ const Form = () => {
     } else {
       setButtonDisabled(true);
     }
-  }, [name1, name2, clusterName, pickupCharge, holdPrice, rejectionPenalty]);
+  }, [
+    name1,
+    name2,
+    clusterName,
+    pickupCharge,
+    holdPrice,
+    rejectionPenalty,
+    time,
+  ]);
 
   const resetForm = () => {
     setTime(0);
@@ -116,66 +127,83 @@ const Form = () => {
     alert("Error submitting score");
   };
 
-  const addScoreMutation = useAddEntryMutation({
-    onError: handleError,
-    onSuccess: resetForm,
-  });
-
-  const handleSubmit = () => {
-    addScoreMutation.mutate({
-      time,
-      name1,
-      name2,
-      clusterName,
-      pickupCharge,
-      holdPrice,
-      rejectionPenalty,
-    });
+  const handleSuccess = () => {
+    setShowModal(true);
   };
 
+  const addScoreMutation = useAddEntryMutation();
+
+  const handleSubmit = () => {
+    addScoreMutation.mutate(
+      {
+        timer: time,
+        name1,
+        name2,
+        clusterName,
+        pickupCharge,
+        holdPrice,
+        rejectionPenalty,
+      },
+      { onError: handleError, onSuccess: handleSuccess }
+    );
+  };
+
+  const ctaDisabled =
+    isRunning || buttonDisabled || showModal || addScoreMutation.isPending;
+
   return (
-    <Container>
-      <Timer time={time} setIsRunning={setIsRunning} />
-      <Field>
-        <Label>Name 1</Label>
-        <Input onChange={(e) => setName1(e.target.value)} value={name1} />
-      </Field>
-      <Field>
-        <Label>Name 2</Label>
-        <Input onChange={(e) => setName2(e.target.value)} value={name2} />
-      </Field>
-      <Field>
-        <Label>Cluster Name</Label>
-        <Input
-          onChange={(e) => setClusterName(e.target.value)}
-          value={clusterName}
+    <>
+      <Container>
+        <Timer time={time} setIsRunning={setIsRunning} />
+        <Field>
+          <Label>Name 1</Label>
+          <Input onChange={(e) => setName1(e.target.value)} value={name1} />
+        </Field>
+        <Field>
+          <Label>Name 2</Label>
+          <Input onChange={(e) => setName2(e.target.value)} value={name2} />
+        </Field>
+        <Field>
+          <Label>Cluster Name</Label>
+          <Input
+            onChange={(e) => setClusterName(e.target.value)}
+            value={clusterName}
+          />
+        </Field>
+        <Field>
+          <Label>Pickup Charge</Label>
+          <Input
+            onChange={(e) => setPickupCharge(e.target.value)}
+            value={pickupCharge}
+          />
+        </Field>
+        <Field>
+          <Label>Hold Bonus</Label>
+          <Input
+            onChange={(e) => setHoldPrice(e.target.value)}
+            value={holdPrice}
+          />
+        </Field>
+        <Field>
+          <Label>Rejection Penalty</Label>
+          <Input
+            onChange={(e) => setRejectionPenalty(e.target.value)}
+            value={rejectionPenalty}
+          />
+        </Field>
+        <SubmitButton disabled={ctaDisabled} onClick={handleSubmit}>
+          Submit
+        </SubmitButton>
+      </Container>
+      {showModal && (
+        <Modal
+          time={time}
+          pickupCharge={pickupCharge}
+          holdPrice={holdPrice}
+          rejectionPenalty={rejectionPenalty}
         />
-      </Field>
-      <Field>
-        <Label>Pickup Charge</Label>
-        <Input
-          onChange={(e) => setPickupCharge(e.target.value)}
-          value={pickupCharge}
-        />
-      </Field>
-      <Field>
-        <Label>Hold Price</Label>
-        <Input
-          onChange={(e) => setHoldPrice(e.target.value)}
-          value={holdPrice}
-        />
-      </Field>
-      <Field>
-        <Label>Acceptance Penalty</Label>
-        <Input
-          onChange={(e) => setRejectionPenalty(e.target.value)}
-          value={rejectionPenalty}
-        />
-      </Field>
-      <SubmitButton disabled={buttonDisabled} onClick={handleSubmit}>
-        Submit
-      </SubmitButton>
-    </Container>
+      )}
+    </>
   );
 };
 

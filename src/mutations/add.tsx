@@ -1,8 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 type Score = {
-  time: number;
+  timer: number;
   name1: string;
   name2: string;
   clusterName: string;
@@ -11,16 +11,18 @@ type Score = {
   rejectionPenalty: string;
 };
 
-type Callbacks = {
-  onSuccess: () => void;
-  onError: () => void;
-};
+const useAddEntryMutation = () => {
+  const queryClient = useQueryClient();
 
-const useAddEntryMutation = ({ onSuccess, onError }: Callbacks) => {
   return useMutation({
-    mutationFn: (score: Score) => axios.post("/api/scores", { ...score }),
-    onError,
-    onSuccess,
+    mutationFn: (score: Score) =>
+      axios.post(
+        "https://apik.zagforward.com/stc/pricingcache/api/v1/leaderboard/add",
+        { ...score }
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["GET-LEADERBOARD"] });
+    },
   });
 };
 

@@ -18,6 +18,7 @@ const TableWrapper = styled.div`
   font-family: "formula1";
   border: 1px solid white;
   padding: 10px;
+  padding-bottom: 20px;
 
   table {
     width: 100%;

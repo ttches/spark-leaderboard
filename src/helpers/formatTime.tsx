@@ -22,10 +22,9 @@ const calculateTotalTime = ({
   holdPrice = 0,
   rejectionPenalty = 0,
 }: TimeAndModifiers) => {
-  // UPDATE MATH AS NEEDED
-  const pickupPenalty = (pickupCharge / 50) * 30;
-  const holdBonus = (holdPrice / 1000) * 2;
-  const rejectionAdjustment = rejectionPenalty * 1;
+  const pickupPenalty = pickupCharge <= 0 ? 0 : 3000;
+  const holdBonus = holdPrice / 10;
+  const rejectionAdjustment = rejectionPenalty / 5;
   return timer + pickupPenalty - holdBonus + rejectionAdjustment;
 };
 
