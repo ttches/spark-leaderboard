@@ -10,11 +10,11 @@ const useListQuery = () =>
       ),
     ...{
       enabled: true,
-      cacheTime: 1000 * 60 * 60,
+      cacheTime: 1000 * 60 * 6,
       refetchOnMount: false,
       // @ts-expect-error not typed
       select: (res) => res?.data?.content || [],
-      staleTime: 1000 * 60 * 30,
+      staleTime: 1000 * 60 * 3,
       retry: false,
       refetchOnWindowFocus: false,
       retryOnMount: false,
